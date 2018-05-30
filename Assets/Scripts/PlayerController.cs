@@ -28,10 +28,13 @@ public class PlayerController : MonoBehaviour {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        Vector3 keyboardMovement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         Vector3 ovrMovement = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
-        rb.AddForce(ovrMovement * speed);
+        Vector3 movement = new Vector3(ovrMovement.x, 0.0f, ovrMovement.y);
+
+        rb.AddForce(movement * speed);
+        rb.AddForce(keyboardMovement * speed);
     }
 
     private void OnTriggerEnter(Collider other)
