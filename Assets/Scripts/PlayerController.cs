@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
+    private static int TOTAL_PRIZES = 0;
+
     public float speed;
     public Text countText;
     public Text winText;
@@ -30,11 +32,19 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 keyboardMovement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
-        Vector3 ovrMovement = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
-        Vector3 movement = new Vector3(ovrMovement.x, 0.0f, ovrMovement.y);
+        // Get Oculus touch controllers' thumbstick axis movement
+        Vector3 ovrMovementRight = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
+        Vector3 movementRight = new Vector3(ovrMovementRight.x, 0.0f, ovrMovementRight.y);
+        Vector3 ovrMovementLeft = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.LTouch);
+        Vector3 movementLeft = new Vector3(ovrMovementLeft.x, 0.0f, ovrMovementLeft.y);
 
-        rb.AddForce(movement * speed);
+        // We are allowing keyboard and Oculus touch controllers
         rb.AddForce(keyboardMovement * speed);
+        rb.AddForce(movementLeft * speed);
+        rb.AddForce(movementRight * speed);
+
+        // Position the texts to face the camera
+        countText.transform.LookAt(GameObject.FindWithTag("Player").transform.position);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -50,7 +60,7 @@ public class PlayerController : MonoBehaviour {
     private void UpdateCountText()
     {
         countText.text = "Count: " + count.ToString();
-        if (count >= 13)
+        if (count >= TOTAL_PRIZES)
         {
             winText.text = "Great news! You win!";
         }
