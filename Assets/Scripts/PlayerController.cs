@@ -23,11 +23,15 @@ public class PlayerController : MonoBehaviour {
     // Called before applying any physics calculations
     private void FixedUpdate()
     {
+        OVRInput.Update();
+
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        rb.AddForce(movement * speed);
+
+        Vector3 ovrMovement = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
+        rb.AddForce(ovrMovement * speed);
     }
 
     private void OnTriggerEnter(Collider other)
