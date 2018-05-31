@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour {
 
     private static int TOTAL_PRIZES = 0;
 
     public float speed;
-    public Text countText;
+    //public Text countText;
     public Text winText;
+
+    //public TextMeshPro countText;
+    public TextMeshProUGUI countText;
 
     private Rigidbody rb;
     private int count;
@@ -42,9 +46,6 @@ public class PlayerController : MonoBehaviour {
         rb.AddForce(keyboardMovement * speed);
         rb.AddForce(movementLeft * speed);
         rb.AddForce(movementRight * speed);
-
-        // Position the texts to face the camera
-        countText.transform.LookAt(GameObject.FindWithTag("Player").transform.position);
     }
 
     private void OnTriggerEnter(Collider other)
